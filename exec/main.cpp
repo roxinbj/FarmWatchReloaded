@@ -1,40 +1,33 @@
 #include <iostream>
+#include <stdio.h>
+
 #include <opencv2/opencv.hpp>
 #include <lib_imageDatatypes.hpp>
 #include <lib_dataImporter.hpp>
-#include <stdio.h>
+#include <lib_imageOperations.hpp>
 
 
-int main(int argc, char** argv )
-{
-	Fw::FileReader fileReader{"../imagesPath.txt"};
-	std::vector<std::string> myVector = fileReader.getContent();
-    Fw::FolderReader folderReader{myVector[0]};
 
-	for(auto item : folderReader.getContent())
-	{
-		std::cout << "Zeile: " << item << "\n";
+int main(int argc, char** argv) {
+	// set path to Images
+	const std::string m_pathToImagesFolder {
+			Fw::FileReader("../imagesPath.txt").getContent()[0] };
+	const std::vector<std::string> m_imageNames { Fw::FolderReader {
+			m_pathToImagesFolder }.getContent() };
+
+	// set up ImageContainer Vector
+	std::vector<Fw::ImageContainer> m_imageContainer;
+	for (int i = 0; i < m_imageNames.size(); ++i) {
+		const std::string path { m_pathToImagesFolder + "/" + m_imageNames[i] };
+		m_imageContainer.push_back(Fw::ImageContainer(path));
 	}
 
-	using namespace cv;
-    if ( argc != 2 )
-    {
-        printf("usage: DisplayImage.out <Image_Path>\n");
-        return -1;
-    }
+	// perform operations on images before analysis
+	void (*foo)(cv::Mat&) = &createGrad;
+	m_imageContainer[0].operate(foo);
 
-    Mat image;
-    image = imread( argv[1], 1 );
+	//demo
+	Fw::showImage(m_imageContainer[0].getImage());
 
-    if ( !image.data )
-    {
-        printf("No image data \n");
-        return -1;
-    }
-    namedWindow("Display Image", WINDOW_AUTOSIZE );
-    imshow("Display Image", image);
-
-    waitKey(0);
-
-    return 0;
+	return 0;
 }

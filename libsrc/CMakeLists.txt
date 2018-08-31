@@ -1,11 +1,12 @@
 project(libsrc)
 
 
-
+find_package( OpenCV REQUIRED )
 message (“Libs directory: “ ${PROJECT_SOURCE_DIR})
 set(HEADERS lib_imageDatatypes.hpp lib_dataImporter.hpp) 
 set(SOURCES lib_imageDatatypes.cpp lib_dataImporter.cpp)
 add_library(libsrc SHARED ${HEADERS} ${SOURCES} )
+target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS})
 
 #link
 #———

@@ -26,7 +26,7 @@ private:
 class FileReader {
 
 public:
-	explicit FileReader(const std::string& pathToFile) :
+	explicit FileReader(const std::string&& pathToFile) :
 			m_pathToFile(pathToFile) {
 		openFile();
 		readContent();
@@ -35,7 +35,7 @@ public:
 		closeFile();
 	}
 
-	const std::vector<std::string> getContent() {
+	const std::vector<std::string> getContent() const {
 		return m_content;
 	}
 
@@ -54,7 +54,7 @@ private:
 	void closeFile() {
 		m_file.close();
 	}
-	bool doesFileExist(const std::string& name) {
+	const bool doesFileExist(const std::string& name) const {
 		struct stat buffer;
 		return (stat(name.c_str(), &buffer) == 0);
 	}
@@ -65,7 +65,7 @@ private:
 
 class FolderReader {
 public:
-	FolderReader(const std::string& pathToFolder) {
+	explicit FolderReader(const std::string& pathToFolder) {
 		if (openFolder(pathToFolder)) {
 			readFolder();
 		}
@@ -81,7 +81,7 @@ private:
 	bool openFolder(const std::string& pathToFolder) {
 		m_directory = opendir(pathToFolder.c_str());
 		if (m_directory == nullptr) {
-			std::cout << "Directory " << m_directoryPath <<" not found \n";
+			std::cout << "Directory " << pathToFolder <<" not found \n";
 			exit(1);
 			return false;
 		}
