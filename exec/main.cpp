@@ -7,8 +7,10 @@
 #include <lib_imageOperations.hpp>
 
 
+extern const int g_gaussianBlurSetting(0);
 
 int main(int argc, char** argv) {
+
 	// set path to Images
 	const std::string m_pathToImagesFolder {
 			Fw::FileReader("../imagesPath.txt").getContent()[0] };
@@ -23,11 +25,12 @@ int main(int argc, char** argv) {
 	}
 
 	// perform operations on images before analysis
-	void (*foo)(cv::Mat&) = &createGrad;
+	void (*foo)(cv::Mat&) = &Fw::createGrad;
 	m_imageContainer[0].operate(foo);
 
 	//demo
 	Fw::showImage(m_imageContainer[0].getImage());
-
+	std::cout << "Date: " << m_imageContainer[0].getDate() << "\n ";
+	std::cout << "Time: " << m_imageContainer[0].getTime().getTime() << "\n ";
 	return 0;
 }
