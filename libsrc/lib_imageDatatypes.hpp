@@ -58,9 +58,14 @@ class ImageContainer {
 
 public:
 	ImageContainer(const std::string& pathToImage) :
-			m_image(Fw::readImage(pathToImage)) {
+			m_pathToImage(pathToImage), m_image(Fw::readImage(pathToImage)) {
 	}
 
+	cv::Mat getOriginal() {
+		return readImage(m_pathToImage);
+	}
+
+	// used to perform transformations on image
 	cv::Mat& getImage() {
 		if (!m_image.data) {
 			std::cout << "No image data to give \n";
@@ -69,11 +74,14 @@ public:
 		return m_image;
 	}
 
-	Date& getDate() {
+	Date const & getDate() {
 		return m_date;
 	}
-	Time& getTime() {
+	Time const & getTime() {
 		return m_time;
+	}
+	std::string const & getVenue() {
+		return m_venue;
 	}
 
 	// perform operations on image
@@ -81,13 +89,20 @@ public:
 		foo(m_image);
 	}
 
+	friend std::ostream& operator<<(std::ostream& os, const ImageContainer& obj) {
+		// write obj to stream
+		os << "to be implemented";
+		return os;
+	}
+
 private:
 	cv::Mat m_image;
 	Fw::Label m_label { Fw::Label::Unknown };
 	Fw::Date m_date { };
 	Fw::Time m_time { };
+	std::string m_venue { };
 	bool isDayImage { true };
-
+	const std::string m_pathToImage;
 };
 
 } // End of Namespace Fw
