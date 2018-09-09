@@ -18,11 +18,11 @@ static void applyImageFiltersAlgorithms(cv::Mat& image) {
 	// todo: to be pimped
 	//image preperation
 	Fw::convertToGray(image);
-	cv::GaussianBlur( image, image, cv::Size(3,3), 0, 0, cv::BORDER_DEFAULT );
+	//cv::GaussianBlur( image, image, cv::Size(3,3), 0, 0, cv::BORDER_DEFAULT );
 }
 
-static void runImageDeltaAnalysis(cv::Mat& mainImage, cv::Mat& referenceImage) {
-	Fw::runDifferenceOfGradients(mainImage,referenceImage);
+static void runImageDeltaAnalysis(cv::Mat& mainImage, cv::Mat& referenceImage, cv::Mat& resultImage) {
+	Fw::runDifferenceOfGradients(mainImage,referenceImage, resultImage);
 }
 
 }

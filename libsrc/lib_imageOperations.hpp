@@ -24,6 +24,13 @@ static bool isDayImage(cv::Mat& image) {
 	return true;
 }
 
+static void saveImage(const cv::Mat& image, const std::string& path, const std::string& name)
+{
+	std::string pathName{path + "/" + name};
+	cv::imwrite(pathName, image);
+
+}
+
 static void createGrad(cv::Mat& image) {
 	using namespace cv;
 	const int scale = 1;
@@ -52,26 +59,35 @@ static void convertToGray(cv::Mat& image) {
 	cv::cvtColor(image, image, CV_BGR2GRAY);
 }
 
+
+
+
+
 static void runDifferenceOfGradients(cv::Mat& currentImage,
-		cv::Mat& previousImage) {
-	cv::Mat result;
-	cv::absdiff(previousImage, currentImage, result);
-	cv::medianBlur(result, result, 9);
-	cv::threshold(result, result, 30, 255, cv::THRESH_BINARY);
-	int dilation_size = 4;
-	cv::Mat element = cv::getStructuringElement(0,
+		cv::Mat& previousImage, cv::Mat& result) {
+
+	using namespace cv;
+	cv::compare(previousImage, currentImage, result, cv::CmpTypes::CMP_GT);
+
+	//cv::absdiff(previousImage, currentImage, result);
+	//cv::medianBlur(result, result, 9);
+	//cv::threshold(result, result, 30, 255, cv::THRESH_BINARY);
+	int dilation_size = 1;
+	int erode_size = 1;
+	cv::Mat dilateElement = cv::getStructuringElement(0,
 			cv::Size(2 * dilation_size + 1, 2 * dilation_size + 1),
 			cv::Point(dilation_size, dilation_size));
-	cv::Mat element2 = cv::getStructuringElement(0,
-			cv::Size(4 * dilation_size + 1, 4 * dilation_size + 1),
-			cv::Point(2 * dilation_size, 2 * dilation_size));
-	cv::medianBlur(result, result, 7);
-	cv::erode(result, result, element2);
-	cv::medianBlur(result, result, 7);
-	cv::dilate(result, result, element);
-	currentImage = result;
+	cv::Mat erodeElement = cv::getStructuringElement(0,
+			cv::Size(4 * erode_size + 1, 4 * erode_size + 1),
+			cv::Point(2 * erode_size, 2 * erode_size));
+	//cv::medianBlur(result, result, 7);
+	cv::erode(result, result, erodeElement);
+	//cv::medianBlur(result, result, 7);
+	cv::dilate(result, result, dilateElement);
+
 }
 
 } // end of namespace Fw
 
 #endif /* fw_imageOperations_hpp */
+

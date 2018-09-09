@@ -84,12 +84,17 @@ public:
 		return m_venue;
 	}
 
+	cv::Mat& getAnalysedImageRef() {
+		return m_analysedImage;
+	}
+
 	// perform operations on image
 	void operate(imageOperation foo) {
 		foo(m_image);
 	}
 
-	friend std::ostream& operator<<(std::ostream& os, const ImageContainer& obj) {
+	friend std::ostream& operator<<(std::ostream& os,
+			const ImageContainer& obj) {
 		// write obj to stream
 		os << "to be implemented";
 		return os;
@@ -97,6 +102,7 @@ public:
 
 private:
 	cv::Mat m_image;
+	cv::Mat m_analysedImage;
 	Fw::Label m_label { Fw::Label::Unknown };
 	Fw::Date m_date { };
 	Fw::Time m_time { };

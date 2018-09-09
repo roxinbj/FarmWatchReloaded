@@ -1,2 +1,2 @@
+/Users/Bjoern/Data/RepoA/FarmWatchReloaded
 /Users/Bjoern/Documents/Arbeit/CPP/Eclipse_ws/FarmWatch/bin/Data/Set1
-/Users/Bjoern/Data/RepoA/FarmWatchReloaded/bin/Examples
