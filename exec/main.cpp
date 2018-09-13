@@ -54,6 +54,11 @@ int main(int argc, char** argv) {
 		// run algorithms
 		Fw::runImageDeltaAnalysis(current->getImage(), previous->getImage(),
 				current->getAnalysedImageRef());
+		//Fw::drawContours(current->getAnalysedImageRef());
+		Fw::drawCircle(current->getAnalysedImageRef());
+
+
+		// print
 		if (g_showImages) {
 			Fw::showImage(m_imageContainer[i].getOriginal());
 		}

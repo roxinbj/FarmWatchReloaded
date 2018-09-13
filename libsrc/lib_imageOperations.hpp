@@ -24,9 +24,9 @@ static bool isDayImage(cv::Mat& image) {
 	return true;
 }
 
-static void saveImage(const cv::Mat& image, const std::string& path, const std::string& name)
-{
-	std::string pathName{path + "/" + name};
+static void saveImage(const cv::Mat& image, const std::string& path,
+		const std::string& name) {
+	std::string pathName { path + "/" + name };
 	cv::imwrite(pathName, image);
 
 }
@@ -59,9 +59,44 @@ static void convertToGray(cv::Mat& image) {
 	cv::cvtColor(image, image, CV_BGR2GRAY);
 }
 
+static void drawContours(cv::Mat& image) {
+	using namespace cv;
+	std::vector<std::vector<Point>> iContours;
+	std::vector<Vec4i> iHierarchy;
+	std::vector<Rect> iBoundingRect;
+	findContours(image, iContours, iHierarchy, CV_RETR_EXTERNAL,
+			CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
+	for (int i = 0; i < iContours.size(); i++) {
+		// Create Bounding Boxes
+		std::vector<Point> contours_poly;
+		//approxPolyDP(Mat(iContours[i]), contours_poly, 3, true);
+		Rect rect = boundingRect(Mat(iContours[i]));
+		drawContours(image,
+				std::vector<std::vector<Point> >(1, iContours.at(i)), 0,
+				Scalar(255, 0, 255), 1, 8);
+		rectangle(image, rect.tl(), rect.br(), Scalar(255, 0, 255), 1, 8, 0);
+	}
+}
 
+static void drawCircle(cv::Mat& image) {
+	using namespace cv;
+	std::vector<std::vector<Point>> iContours;
+	std::vector<Vec4i> iHierarchy;
+	std::vector<Rect> iBoundingRect;
+	findContours(image, iContours, iHierarchy, CV_RETR_EXTERNAL,
+			CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
+	for (int i = 0; i < iContours.size(); i++) {
+		// Create Bounding Boxes
 
+		Point2f center;
+		float radius;
+
+		minEnclosingCircle(iContours[i], center, radius);
+		circle(image, center, static_cast<int>(radius), Scalar(255, 0, 255), 1);
+	}
+
+}
 
 static void runDifferenceOfGradients(cv::Mat& currentImage,
 		cv::Mat& previousImage, cv::Mat& result) {
@@ -69,10 +104,9 @@ static void runDifferenceOfGradients(cv::Mat& currentImage,
 	using namespace cv;
 	cv::compare(previousImage, currentImage, result, cv::CmpTypes::CMP_GT);
 
-	//cv::absdiff(previousImage, currentImage, result);
 	//cv::medianBlur(result, result, 9);
 	//cv::threshold(result, result, 30, 255, cv::THRESH_BINARY);
-	int dilation_size = 1;
+	int dilation_size = 3;
 	int erode_size = 1;
 	cv::Mat dilateElement = cv::getStructuringElement(0,
 			cv::Size(2 * dilation_size + 1, 2 * dilation_size + 1),
