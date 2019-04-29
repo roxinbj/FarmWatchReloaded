@@ -18,7 +18,7 @@ endif()
 find_package(OpenCV REQUIRED ) 
 
 include_directories(${CMAKE_SOURCE_DIR}/libsrc)
-
+include_directories(globalVariables.hpp)
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCE_DIR}/main.cpp)
 

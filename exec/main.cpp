@@ -6,6 +6,7 @@
 #include <lib_imageDatatypes.hpp>
 #include <lib_dataImporter.hpp>
 #include <lib_imageOperations.hpp>
+#include "globalVariables.hpp"
 #include "fw_filtering.hpp"
 
 extern const int g_gaussianBlurSetting(0);
@@ -21,6 +22,7 @@ int main(int argc, char** argv) {
 	// --------------------------------
 	// ImageContainer
 	std::vector<Fw::ImageContainer> m_imageContainer;
+	m_imageContainer.reserve(Fw::g_setSize);
 	// Pointer to ImageContainer
 	Fw::ImageContainer* current { nullptr };
 	Fw::ImageContainer* previous { nullptr };
@@ -31,8 +33,11 @@ int main(int argc, char** argv) {
 	const std::vector<std::string> m_imageNames { Fw::FolderReader {
 			m_pathToImagesFolder }.getContent() };
 
+	// split images into different sets
+	//todo:: set loop for different sets
+
 	// set up ImageContainer Vector
-	for (int i = 0; i < m_imageNames.size(); ++i) {
+	for (int i = 0; i < m_imageNames.size() && i < Fw::g_setSize; ++i) {
 		const std::string path { m_pathToImagesFolder + "/" + m_imageNames[i] };
 		m_imageContainer.push_back(Fw::ImageContainer(path));
 	}

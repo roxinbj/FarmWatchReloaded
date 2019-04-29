@@ -1,2 +1,3 @@
-/Users/Bjoern/Documents/Arbeit/CPP/Eclipse_ws/FarmWatch/bin/Data/Set1
+/Users/Bjoern/Pictures/100MFCAM
 /Users/Bjoern/Data/RepoA/FarmWatchReloaded/bin/Examples
+/Users/Bjoern/Documents/Arbeit/CPP/Eclipse_ws/FarmWatch/bin/Data/Set2

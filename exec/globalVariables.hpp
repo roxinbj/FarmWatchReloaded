@@ -7,8 +7,9 @@ namespace Fw
 
 //global Variables
 
-constexpr std::string pathToImages = {};
-
+static constexpr int g_setSize = {4};
+//extern constexpr int g_rows = {768};
+//extern constexpr int g_cols = {1024};
 
 
 
